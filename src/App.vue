@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
        
       <router-link to="/databases-list">Databases List</router-link> |
+      <router-link to="/add-database">Add Database</router-link> |
   
     </div>
     <router-view/>
@@ -31,4 +32,5 @@
 .bold {
   font-weight: bold;
 }
+ 
 </style>

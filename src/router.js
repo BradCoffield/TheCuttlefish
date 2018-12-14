@@ -20,17 +20,17 @@ export default new Router({
     },
     {
       path: '/databases-list',
-      name: 'databases list',
+      name: 'databases-list',
       component: DatabasesList
     },
     {
       path: '/add-database',
-      name: 'Add Database',
+      name: 'add-database',
       component: AddDatabase
     },
     {
       path: '/edit-database/:id',
-      name: 'Edit Database',
+      name: 'editDatabase',
       component: EditDatabase
     },
    

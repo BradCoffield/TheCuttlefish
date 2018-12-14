@@ -41,6 +41,7 @@
       detailed
       paginated
       per-page="10"
+       
              
     >
       <template slot-scope="props">
@@ -51,12 +52,12 @@
 
         <b-table-column field="description" label="Description" width="550" >{{ props.row.description }}</b-table-column>
 
-        <b-table-column
+        <!-- <b-table-column
           field="excellent_for"
           label="Excellent For"
-        >{{ props.row.excellentFor.join(", ") }}</b-table-column>
+        >{{ props.row.excellentFor.join(", ") }}</b-table-column> -->
 
-        <b-table-column field="good_for" label="Good For">{{ props.row.goodFor.join(", ") }}</b-table-column>
+        <!-- <b-table-column id="table-goodFor" field="good_for" label="Good For">{{ props.row.goodFor.join(", ") }}</b-table-column> -->
 
         <!-- <b-table-column field="date" label="Date" centered>
                     <span class="tag is-success">
@@ -65,13 +66,13 @@
         </b-table-column>-->
       
        <b-table-column field="url" label="URL"  >{{ props.row.url }}</b-table-column>
-       <b-table-column field="content_types" label="Content Types"  >{{ props.row.contentTypes.join(", ") }}</b-table-column>
+       <!-- <b-table-column field="content_types" label="Content Types"  >{{ props.row.contentTypes.join(", ") }}</b-table-column> -->
        <b-table-column field="vendor" label="Vendor"  >{{ props.row.vendor }}</b-table-column>
        <b-table-column field="featureable" label="Featureable"  >{{ props.row.featureable }}</b-table-column>
 
       </template>
 
-      <template slot="detail" slot-scope="props">
+      <!-- <template slot="detail" slot-scope="props">
         <article class="media">
           <figure class="media-left">
             <p class="image is-64x64">
@@ -91,9 +92,9 @@
             </div>
           </div>
         </article>
-      </template>
+      </template> -->
 
-      <template slot="empty">
+      <!-- <template slot="empty">
         <section class="section">
           <div class="content has-text-grey has-text-centered">
             <p>
@@ -102,10 +103,14 @@
             <p>Nothing here.</p>
           </div>
         </section>
-      </template>
-          <template slot="detail" slot-scope="props">
-{{excellentFor}}
-            hi
+      </template> -->
+
+          <template slot="detail" slot-scope="props" >
+<div><span class="bold">Excellent for:</span> {{ props.row.excellentFor.join(", ")}}</div>
+<div><span class="bold">Good for:</span> {{ props.row.goodFor.join(", ")}}</div>
+<div><span class="bold">Content Types:</span> {{ props.row.contentTypes.join(", ")}}</div>
+
+            
           </template>
     </b-table>
 
@@ -121,6 +126,7 @@ export default {
  
   data() {
     return {
+      excellentForDelayed: "",
       data: [],
       errors: [],
       ref: firebase.firestore().collection("databases"),
@@ -136,6 +142,7 @@ export default {
     };
   },
   created() {
+    this.isLoading = true;
     this.ref.onSnapshot(querySnapshot => {
       this.data = [];
       querySnapshot.forEach(doc => {
@@ -151,7 +158,9 @@ export default {
           featureable: doc.data().featurable
         });
       });
+      this.isLoading = false;
     });
+    
   },
   methods: {
     details(board) {
@@ -161,4 +170,13 @@ export default {
 };
 </script>
 
+ <style>
+ #table-goodFor{font-size: 12px;}
+ .table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
+	background-color: #E0E0E0!important;
+}
+.mdi.mdi-chevron-right {
+  color: goldenrod;
+}
+ </style>
  

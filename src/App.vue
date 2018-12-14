@@ -28,4 +28,7 @@
     }
   }
 }
+.bold {
+  font-weight: bold;
+}
 </style>

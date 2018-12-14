@@ -38,6 +38,9 @@
       :loading="isLoading"
       :focusable="isFocusable"
       :mobile-cards=true
+      detailed
+      paginated
+      per-page="10"
              
     >
       <template slot-scope="props">
@@ -100,8 +103,12 @@
           </div>
         </section>
       </template>
+          <template slot="detail" slot-scope="props">
+{{excellentFor}}
+            hi
+          </template>
     </b-table>
-    {{data}}
+
   </section>
 </template>
 
@@ -111,7 +118,7 @@ import firebase from "../Firebase";
 import router from "../router";
 
 export default {
-  name: "DatabasesList",
+ 
   data() {
     return {
       data: [],

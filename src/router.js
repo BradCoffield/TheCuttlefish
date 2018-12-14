@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
  
 import DatabasesList from './views/DatabasesList.vue'
-import DatabasesListFancy from './views/DatabasesList-FANCY.vue'
+ 
 
 Vue.use(Router)
 
@@ -21,11 +21,7 @@ export default new Router({
       name: 'databases list',
       component: DatabasesList
     },
-    {
-      path: '/databases-list-fancy',
-      name: 'databases list fancy',
-      component: DatabasesListFancy
-    },
+   
     
   ]
 })

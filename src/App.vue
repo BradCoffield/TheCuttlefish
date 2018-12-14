@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
        
       <router-link to="/databases-list">Databases List</router-link> |
-      <router-link to="/databases-list-fancy">Databases List Fancy</router-link>
+  
     </div>
     <router-view/>
   </div>

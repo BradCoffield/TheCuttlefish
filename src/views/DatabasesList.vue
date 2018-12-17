@@ -30,7 +30,7 @@
         <b-table-column field="vendor" label="Vendor" sortable>{{ props.row.vendor }}</b-table-column>
         <b-table-column field="featureable" label="Featureable" sortable>{{ props.row.featureable }}</b-table-column>
         <b-table-column field="editButton" label=" ">
-          <button @click.stop="editDatabase(props.row.key)">Edit</button>
+          <button class="button is-light" @click.stop="editDatabase(props.row.key)">Edit</button>
           <!-- <button @click="alerrrt(props.row.key)">Edit</button> -->
         </b-table-column>
       </template>

@@ -27,11 +27,20 @@
         <b-switch v-model="database.featurable">{{ database.featurable }}</b-switch>
       </b-field>
 
-      <b-field label="Message">
-        <b-input maxlength="200" type="textarea"></b-input>
+      <b-field label="Content Types" >
+<template v-for="item in contentTypes"  >
+  <label class="checkbox" v-bind:key="item">
+    <input type="checkbox">
+    {{item[0]}}
+  </label>
+</template>
       </b-field>
-      <button @click="sendUpdate" class="button is-info">Update</button>
-      <button @click="goHome" class="button is-danger">Cancel</button>
+
+     
+      <div class="form-buttons">
+        <button @click="sendUpdate" class="button is-info"> <span class="mdi mdi-check"></span> Update</button> 
+        <button @click="goHome" class="button is-danger"><span class="mdi mdi-cancel"></span> Cancel</button>
+      </div>
     </section>
   </div>
 </template>
@@ -44,7 +53,8 @@ export default {
   data() {
     return {
       key: this.$route.params.id,
-      database: {}
+      database: {},
+      contentTypes: []
     };
   },
   created() {
@@ -52,6 +62,7 @@ export default {
       .firestore()
       .collection("databases")
       .doc(this.$route.params.id);
+    
     ref.get().then(doc => {
       if (doc.exists) {
         this.database = doc.data();
@@ -59,6 +70,20 @@ export default {
         alert("No such document!");
       }
     });
+    
+    const contentTypesDB = firebase
+      .firestore()
+      .collection("content-types")
+      .doc("forDatabases");
+
+    contentTypesDB.get().then(doc => {
+      if (doc.exists) {
+        this.contentTypes = doc.data();
+        return 
+      } else {
+        alert("No such document!");
+      }
+    }).then(res => this.fillOutContentTypes());
   },
   methods: {
     sendUpdate(evt) {
@@ -71,6 +96,9 @@ export default {
     },
     goHome() {
       router.push("/databases-list");
+    },
+    fillOutContentTypes() {
+      console.log('aw shit');
     }
   }
 };
@@ -80,5 +108,15 @@ export default {
 h2 {
   font-weight: bold;
   font-size: 2rem;
+}
+.field {
+  padding:1rem;
+}
+.mdi {
+  margin-right:4px;
+}
+.form-buttons button{
+  margin-right:.25rem;
+  margin-left:.25rem;
 }
 </style>

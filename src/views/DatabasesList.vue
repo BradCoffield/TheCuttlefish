@@ -70,8 +70,10 @@ export default {
   created() {
     this.isLoading = true;
     this.ref.onSnapshot(querySnapshot => {
+      
       this.data = [];
       querySnapshot.forEach(doc => {
+        console.log(doc.data())
         this.data.push({
           key: doc.id,
           name: doc.data().name,
@@ -109,10 +111,11 @@ export default {
   font-size: 12px;
 }
 .table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
-  background-color: #e0e0e0 !important;
+  background-color: #ececec !important;
 }
 .mdi.mdi-chevron-right {
   color: goldenrod;
 }
+ 
 </style>
  

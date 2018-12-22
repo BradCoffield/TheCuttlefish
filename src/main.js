@@ -11,9 +11,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
- /*  components: {
-    editCtTypes: () =>
-      import("../src/components/editDatabases/EditDatabasesContentTypes.vue")
-  }, */
+  
   render: h => h(App)
 }).$mount("#app");

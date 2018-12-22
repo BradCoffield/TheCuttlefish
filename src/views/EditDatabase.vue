@@ -40,13 +40,11 @@
               @click="item.selected=!item.selected"
             >{{item.name}}</button>
           </li>
-
-          <!-- TODO: So, what needs to happen is I need to look at the ajax result of the entire database and look at its contenttyupes array inside that, which lists the content tyeps that apply to that array. and then, like just use the name of the valu eto select contentTypesContoller[value].selected = true to set it to true. -->
-          <!-- FIXME: so the problem i'm having right now is that the things are empty when checking. I need to run a promise chain like -> get initial ajax call to populate the form -> populate the content types -> get the data from the initial and compare against the base content types. so, populate all my arrays for sure before preceding.-->
         </ul>
       </b-field>
 
       <div class="form-buttons">
+        <!-- <button @click="prepCTforSubmit" class="button is-info"> -->
         <button @click="sendUpdate" class="button is-info">
           <span class="mdi mdi-check"></span> Update
         </button>
@@ -62,6 +60,7 @@
 import firebase from "../Firebase";
 import router from "../router";
 import _ from "lodash";
+import contentTypesList from "../components/editDatabases/EditDatabasesContentTypes";
 export default {
   name: "editDatabase",
   data() {
@@ -70,7 +69,8 @@ export default {
       database: {},
       contentTypes: [],
       contentTypesController: [],
-      contentTypesFromFirestore: []
+      contentTypesFromFirestore: [],
+      docData: {}
     };
   },
   created() {
@@ -100,7 +100,7 @@ export default {
       }
     });
 
-//Needed a promise.all to make sure certain things resolved before other things tried to do their thang.
+    //Needed a promise.all to make sure certain things resolved before other things tried to do their thang.
     Promise.all([theDatabaseRaw, singleSourceContentTypes])
       .then(values => {
         this.database = values[0];
@@ -119,65 +119,48 @@ export default {
         //so....
         //contentTypesFromFirestore is an array with the buttons I want selected.
         //contentTypesController is the array that has all the possible CTs and which control the state of the buttons
-        
+
         //below iterates over the Controller objects and, using lodash, if the object.name is included in Firestore then change its selected (i.selected) to true
         this.contentTypesController.forEach(i => {
           if (_.includes(this.contentTypesFromFirestore, i.name)) {
             i.selected = true;
           } else {
-            console.log(i.name, "false");
+            // console.log(i.name, "false");
           }
         });
       });
-
-    // this works to get the data about the individual database and populate the array that populates the form. it is also populating an array with what contentTypes are actually currently attached to the database
-    // ref.get().then(doc => {
-    //     if (doc.exists) {
-    //       this.database = doc.data();
-    //       console.log(doc.data());
-    //       this.contentTypesFromFirestore = doc.data().content_types;
-    //     } else {
-    //       alert("No such document!");
-    //     }
-    //   });
-
-    //this works to get contentTypes from the single-source for general databases content types (a different collection in the database). Then it builds an array of objects with the values and selected.false to build the buttons for selecting in the app.
-    // contentTypesDB.get().then(doc => {
-    //   if (doc.exists) {
-    //     // this.contentTypes = doc.data().forDatabases;
-    //     doc.data().forDatabases.forEach(i => {
-    //       this.contentTypes.push(i);
-    //     });
-    //     let contentTypesController = this.contentTypes.map(item => {
-    //       let rObj = {};
-    //       rObj.name = item;
-    //       rObj.selected = false;
-    //       return rObj;
-    //     });
-    //     this.contentTypesController = contentTypesController;
-    //   } else {
-    //     alert("No such document!");
-    //   }
-    // });
   },
-  // TODO: So, I want to get the valid list of content types from its special db listing, which is the official listing.
-  //then populate the array in the data object and in the array a series of objects with like name: and selected:
-  //then ajax of the database itself and go over that and if a content-type exists there changed the array:selected to true.
-  //the array should originally be populated with selected:false so I don't have to worry about the ones that don't come back
+
   methods: {
     sendUpdate(evt) {
-      alert("successss!");
+      this.prepCTforSubmit();
+      // alert("successss!");
       evt.preventDefault();
       const updateRef = firebase
         .firestore()
         .collection("databases")
-        .doc(this.$route.params.id);
+        .doc(this.$route.params.id)
+        .set(this.database, { merge: true });
+      // updateRef();
     },
     goHome() {
       router.push("/databases-list");
     },
- 
-  }
+    prepCTforSubmit() {
+      //empty the array to get ready for all the new values!
+      this.database.content_types = [];
+      //loop over the array that has the current selections for what the user wants.
+      this.contentTypesController.forEach(i => {
+        let z = 0;
+        if (i.selected) {
+          this.database.content_types.push(i.name);
+          console.log(this.database.content_types);
+        }
+        z++;
+      });
+    }
+  },
+  components: {}
 };
 </script>
 

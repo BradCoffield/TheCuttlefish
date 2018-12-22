@@ -1,5 +1,23 @@
 <template>
-    <div>hi, i'm EditDatabasesContetTypes.vue {{name}}::prop1={{prop_1}}::prop2={{prop_2}}</div>
+          <b-field label="Content Types">
+            
+
+    <ul>
+      <li
+        style="display:inline"
+        v-if="basicListOfCT.length > 0"
+        v-for="(item, index)
+     in basicListOfCT"
+        :key="index"
+      >
+        <button
+          class="button lil-space-here is-small"
+          :class="{'is-success':item.selected, 'is-text':!item.selected}"
+          @click="item.selected=!item.selected"
+        >{{item.name}}</button>
+      </li>
+    </ul>
+  </b-field>
 </template>
 
 <script>
@@ -9,6 +27,12 @@ export default {
             name: "Brad"
         }
     },
-    props: ['prop_1', 'prop_2']
+    props: ['basicListOfCT', 'contentTypesToSelect']
 }
 </script>
+
+<style scoped>
+.lil-space-here {
+  margin: 0.5rem;
+}
+</style>

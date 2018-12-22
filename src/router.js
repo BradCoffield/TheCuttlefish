@@ -5,7 +5,6 @@ import Home from './views/Home.vue'
 import DatabasesList from './views/DatabasesList.vue'
 import AddDatabase from './views/AddDatabase.vue'
 import EditDatabase from './views/EditDatabase.vue'
-import CanIListCheckboxes from './components/CanIListCheckboxes.vue'
  
 
 Vue.use(Router)
@@ -34,9 +33,7 @@ export default new Router({
       name: 'editDatabase',
       component: EditDatabase
     },
-   {path:'/test-list',
-  name: 'testList',
-  component: CanIListCheckboxes}
+  
     
   ]
 })

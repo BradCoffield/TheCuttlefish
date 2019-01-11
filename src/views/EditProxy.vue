@@ -25,27 +25,30 @@ import router from "../router";
 export default {
   data() {
     return {
-      proxyUrl: "hey there"
+      proxyUrl: "",
+      ref: firebase.firestore().collection("proxyServerUrl")
     };
   },
   created() {
     console.log("created!");
-     const ref = firebase
-      .firestore()
-      .collection("proxy-server-url")
-      .doc('proxyUrl');
 
+    this.ref.onSnapshot(querySnapshot => {
+      console.log(querySnapshot);
 
+      querySnapshot.forEach(doc => {
+        let response = doc.data();
+        this.proxyUrl = doc.data().proxyURL;
+      });
+    });
   },
   methods: {
     sendUpdate(evt) {
       evt.preventDefault();
       const updateRef = firebase
         .firestore()
-        .collection("databases")
-        .doc(this.$route.params.id)
-        .set(this.database, { merge: true });
-      
+        .collection("proxyServerUrl")
+        .doc("proxyUrl")
+        .set({proxyURL: this.proxyUrl}, { merge: true });
     },
     goHome() {
       router.push("/");

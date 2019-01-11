@@ -42,6 +42,8 @@
         </ul>
       </b-field>
 
+<relevant-topics></relevant-topics>
+
       <div class="form-buttons">
         <!-- <button @click="prepCTforSubmit" class="button is-info"> -->
         <button @click="sendUpdate" class="button is-info">
@@ -60,6 +62,7 @@ import firebase from "../Firebase";
 import router from "../router";
 import _ from "lodash";
 // import contentTypesList from "../components/editDatabases/EditDatabasesContentTypes";
+import relevantTopics from "../components/editDatabases/RelevantTopics";
 export default {
   name: "editDatabase",
   data() {
@@ -109,6 +112,7 @@ export default {
           let rObj = {};
           rObj.name = item;
           rObj.selected = false;
+          console.log(rObj);
           return rObj;
         });
         // console.log(this.contentTypesController);
@@ -159,7 +163,7 @@ export default {
       });
     }
   },
-  components: {}
+  components: {relevantTopics}
 };
 </script>
 
@@ -172,9 +176,7 @@ export default {
   padding: 1rem;
 }
 
-.lil-space-here {
-  margin: 0.5rem;
-}
+
 .form-buttons {
   margin-bottom: 2rem;
 }

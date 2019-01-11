@@ -2,10 +2,10 @@
           <b-field label="Content Types">
             
 
-    <ul>
+    <ul v-if="basicListOfCT.length > 0">
       <li
         style="display:inline"
-        v-if="basicListOfCT.length > 0"
+        
         v-for="(item, index)
      in basicListOfCT"
         :key="index"

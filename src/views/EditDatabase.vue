@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>Edit Database</h2>
+    <h2 class="title">Edit Database</h2>
     <section>
       <b-field label="Name">
         <b-input v-model="database.name"></b-input>
@@ -14,7 +14,7 @@
         <b-input v-model="database.url"></b-input>
       </b-field>
       <b-field label="Use proxy?">
-        <b-switch v-model="database.urlproxied">{{ database.urlproxied }}</b-switch>
+        <b-switch v-model="database.use_proxy"></b-switch>
       </b-field>
 
       <b-field label="Vendor">
@@ -26,10 +26,9 @@
       </b-field>
 
       <b-field label="Content Types">
-        <ul>
+        <ul v-if="contentTypesController.length > 0">
           <li
             style="display:inline"
-            v-if="contentTypesController.length > 0"
             v-for="(item, index)
          in contentTypesController"
             :key="index"
@@ -60,7 +59,7 @@
 import firebase from "../Firebase";
 import router from "../router";
 import _ from "lodash";
-import contentTypesList from "../components/editDatabases/EditDatabasesContentTypes";
+// import contentTypesList from "../components/editDatabases/EditDatabasesContentTypes";
 export default {
   name: "editDatabase",
   data() {
@@ -165,21 +164,18 @@ export default {
 </script>
 
 <style scoped>
-h2 {
+/* h2 {
   font-weight: bold;
   font-size: 2rem;
-}
+} */
 .field {
   padding: 1rem;
 }
-.mdi {
-  margin-right: 4px;
-}
-.form-buttons button {
-  margin-right: 0.25rem;
-  margin-left: 0.25rem;
-}
+
 .lil-space-here {
   margin: 0.5rem;
+}
+.form-buttons {
+  margin-bottom: 2rem;
 }
 </style>

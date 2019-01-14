@@ -84,36 +84,9 @@ export default {
               return rObj;
             })
           });
-          // this.topicsEnhanced.push({
-          //   [prop]: this.topics[prop].map(item => {
-          //     let rObj = {};
-          //     rObj.name = item;
-          //     rObj.selected = false;
-          //     console.log(rObj);
-          //     return [rObj];
-          //   })
-          // });
-
-          //  this.topics[prop];
+       
         }
 
-        // the following gets the data, creates a new array of just the topics and then creates another array with the actual areas and selected. problem is, working with the fucking buttons so i'm gonna try something new.
-        // ref.get().then(doc => {
-        //   if (doc.exists) {
-        //     console.log(doc.data());
-        //     this.topics = doc.data();
-        //     console.log(this.topics);
-
-        //     for (const prop in this.topics) {
-        //       this.topicsTopLevel.push(prop);
-        //     }
-        //     this.topicsTopLevel.forEach(element => {
-        //       this.topics[element].forEach(el => {
-        //         // console.log("b", el);
-        //         this.topicsSelected.push({ name: el, selected: false });
-        //         // console.log(this.topicsSelected);
-        //       });
-        //     });
       } else {
         alert("No such document!");
       }
@@ -134,6 +107,7 @@ export default {
         this.topicsSelected[oneIWant].selected = true;
       }
     }
-  }
+  },
+  props: ['databaseDetails']
 };
 </script>

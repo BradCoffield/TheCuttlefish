@@ -42,7 +42,7 @@
         </ul>
       </b-field>
 
-<relevant-topics></relevant-topics>
+<relevant-topics :databaseDetails="database"></relevant-topics>
 
       <div class="form-buttons">
         <!-- <button @click="prepCTforSubmit" class="button is-info"> -->

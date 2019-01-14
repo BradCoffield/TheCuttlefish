@@ -1,3 +1,4 @@
+TODO: Populat the EF and GF with what is already at the database[done]. Then, on submit, collect the select buttons for sending to firestore.
 <template>
   <div class="container">
     <h2 class="title">Edit Database</h2>
@@ -42,7 +43,36 @@
         </ul>
       </b-field>
 
-<relevant-topics :databaseDetails="database"></relevant-topics>
+      <b-field label="Excellent For">
+        <ul v-if="topicsExcellentForEnhanced.length > 0">
+          <li v-for="(item, index) in topicsExcellentForEnhanced" :key="index">
+            {{item.name}}
+            <br>
+            <button
+              :class="{'is-success':i.selected, 'is-text':!i.selected}"
+              class="button lil-space-here is-small"
+              @click="i.selected=!i.selected"
+              v-for="(i, idex) in item.subtopics"
+              :key="idex"
+            >{{i.name}}</button>
+          </li>
+        </ul>
+      </b-field>
+      <b-field label="Good For">
+        <ul v-if="topicsGoodForEnhanced.length > 0">
+          <li v-for="(item, index) in topicsGoodForEnhanced" :key="index">
+            {{item.name}}
+            <br>
+            <button
+              :class="{'is-success':i.selected, 'is-text':!i.selected}"
+              class="button lil-space-here is-small"
+              @click="i.selected=!i.selected"
+              v-for="(i, idex) in item.subtopics"
+              :key="idex"
+            >{{i.name}}</button>
+          </li>
+        </ul>
+      </b-field>
 
       <div class="form-buttons">
         <!-- <button @click="prepCTforSubmit" class="button is-info"> -->
@@ -72,7 +102,13 @@ export default {
       contentTypes: [],
       contentTypesController: [],
       contentTypesFromFirestore: [],
-      docData: {}
+      docData: {},
+      topics: [],
+      topicsTopLevel: [],
+      topicsSelected: [],
+      topicsExcellentForEnhanced: [],
+      topicsGoodForEnhanced: [],
+      efFromFirestore: []
     };
   },
   created() {
@@ -112,7 +148,7 @@ export default {
           let rObj = {};
           rObj.name = item;
           rObj.selected = false;
-          console.log(rObj);
+          // console.log(rObj);
           return rObj;
         });
         // console.log(this.contentTypesController);
@@ -132,6 +168,75 @@ export default {
           }
         });
       });
+    const ref2 = firebase
+      .firestore()
+      .collection("topic-areas")
+      .doc("forDatabases");
+
+    ref2.get().then(doc => {
+      if (doc.exists) {
+        console.log(doc.data());
+        this.topics = doc.data();
+        console.log(this.topics);
+
+        for (const prop in this.topics) {
+          //create an array with just the top level topics
+          this.topicsTopLevel.push(prop);
+          //create an array that matches "topics" except has objects with name/selected
+          this.topicsExcellentForEnhanced.push({
+            name: prop,
+            subtopics: this.topics[prop].map(item => {
+              let rObj = {};
+              rObj.name = item;
+              rObj.selected = false;
+              // console.log(rObj);
+              return rObj;
+            })
+          });
+          this.topicsGoodForEnhanced.push({
+            name: prop,
+            subtopics: this.topics[prop].map(item => {
+              let rObj = {};
+              rObj.name = item;
+              rObj.selected = false;
+              // console.log(rObj);
+              return rObj;
+            })
+          });
+
+         
+        }
+      } else {
+        alert("No such document!");
+      }
+    }).then(val => {
+       this.topicsExcellentForEnhanced.forEach(i => {
+          //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
+            i.subtopics.forEach(j => {
+                if (_.includes(this.database.excellentFor, j.name)) {
+              // console.log("yay");
+              j.selected = true;
+            } else {
+              // console.log(j.name, "false");
+            }
+            });
+
+           
+          });
+           this.topicsGoodForEnhanced.forEach(i => {
+          //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
+            i.subtopics.forEach(j => {
+                if (_.includes(this.database.goodFor, j.name)) {
+              // console.log("yay");
+              j.selected = true;
+            } else {
+              // console.log(j.name, "false");
+            }
+            });
+
+           
+          });
+    });
   },
 
   methods: {
@@ -163,7 +268,7 @@ export default {
       });
     }
   },
-  components: {relevantTopics}
+  components: { relevantTopics }
 };
 </script>
 
@@ -175,7 +280,6 @@ export default {
 .field {
   padding: 1rem;
 }
-
 
 .form-buttons {
   margin-bottom: 2rem;

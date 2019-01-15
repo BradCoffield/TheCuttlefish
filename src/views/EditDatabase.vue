@@ -1,4 +1,3 @@
-TODO: Populat the EF and GF with what is already at the database[done]. Then, on submit, collect the select buttons for sending to firestore.
 <template>
   <div class="container">
     <h2 class="title">Edit Database</h2>
@@ -104,7 +103,8 @@ export default {
       contentTypesFromFirestore: [],
       docData: {},
       topics: [],
-      topicsSelected: [],
+      topicsEfSelected: [],
+      topicsGfSelected: [],
       topicsExcellentForEnhanced: [],
       topicsGoodForEnhanced: [],
     };
@@ -239,6 +239,7 @@ export default {
   methods: {
     sendUpdate(evt) {
       this.prepCTforSubmit();
+      this.prepTopicsforSubmit();
       // alert("successss!");
       evt.preventDefault();
       const updateRef = firebase
@@ -263,6 +264,28 @@ export default {
         }
         z++;
       });
+    },
+    prepTopicsforSubmit(){
+      //clears out the relevant database obj and checks what buttons are selected and adds them to it for submitting.
+      this.database.goodFor = [];
+      this.database.excellentFor = [];
+       this.topicsExcellentForEnhanced.forEach(i => {
+         i.subtopics.forEach(q => {
+               if (q.selected === true){
+                 this.database.excellentFor.push(q.name);
+               }
+
+         })
+       })
+       this.topicsGoodForEnhanced.forEach(i => {
+         i.subtopics.forEach(q => {
+               if (q.selected === true){
+                 this.database.goodFor.push(q.name);
+               }
+
+         })
+       })
+      
     }
   },
   components: { relevantTopics }

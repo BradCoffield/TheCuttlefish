@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="title">Edit Database</h2>
+    <h2 class="title">Add New Database</h2>
     <section>
       <b-field label="Name">
         <b-input v-model="database.name"></b-input>
@@ -22,7 +22,7 @@
       </b-field>
 
       <b-field label="Featureable?">
-        <b-switch v-model="database.featurable">{{ database.featurable }}</b-switch>
+        <b-switch v-model="database.featurable"></b-switch>
       </b-field>
 
       <b-field label="Content Types">
@@ -42,8 +42,8 @@
         </ul>
       </b-field>
 
-        <b-field label="Excellent For">
-        <ul v-if="topicsExcellentForEnhanced.length > 0">
+      <b-field label="Excellent For">
+        <ul class="ml-1 mt-1" v-if="topicsExcellentForEnhanced.length > 0">
           <li v-for="(item, index) in topicsExcellentForEnhanced" :key="index">
             {{item.name}}
             <br>
@@ -58,7 +58,7 @@
         </ul>
       </b-field>
       <b-field label="Good For">
-        <ul v-if="topicsGoodForEnhanced.length > 0">
+        <ul class="ml-1 mt-1" v-if="topicsGoodForEnhanced.length > 0">
           <li v-for="(item, index) in topicsGoodForEnhanced" :key="index">
             {{item.name}}
             <br>
@@ -71,7 +71,7 @@
             >{{i.name}}</button>
           </li>
         </ul>
-      </b-field> 
+      </b-field>
       <div class="form-buttons">
         <button @click="sendUpdate" class="button is-info">
           <span class="mdi mdi-check"></span> Update
@@ -105,15 +105,7 @@ export default {
   },
   created() {
     //need to initialize with proper types all the aspects of database
-    this.database.name = "";
-    this.database.description = "";
-    this.database.url = "";
-    this.database.use_proxy = false;
-    this.database.vendor = "";
-    this.database.featurable = false;
-    this.database.content_types = [];
-    this.database.excellentFor = [];
-    this.database.goodFor = [];
+    this.initialData();
 
     //need to get the raw list of content types from its area of firestore
     const contentTypesDB = firebase
@@ -136,79 +128,109 @@ export default {
       }
     });
 
-     const ref2 = firebase
+    const ref2 = firebase
       .firestore()
       .collection("topic-areas")
       .doc("forDatabases");
 
-    ref2.get().then(doc => {
-      if (doc.exists) {
-        console.log(doc.data());
-        this.topics = doc.data();
-        console.log(this.topics);
+    ref2
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          console.log(doc.data());
+          this.topics = doc.data();
+          console.log(this.topics);
 
-        for (const prop in this.topics) {
-       
-          //create an array that matches "topics" except has objects with name/selected
-          this.topicsExcellentForEnhanced.push({
-            name: prop,
-            subtopics: this.topics[prop].map(item => {
-              let rObj = {};
-              rObj.name = item;
-              rObj.selected = false;
-              // console.log(rObj);
-              return rObj;
-            })
-          });
-          this.topicsGoodForEnhanced.push({
-            name: prop,
-            subtopics: this.topics[prop].map(item => {
-              let rObj = {};
-              rObj.name = item;
-              rObj.selected = false;
-              // console.log(rObj);
-              return rObj;
-            })
-          });
-
-         
+          for (const prop in this.topics) {
+            //create an array that matches "topics" except has objects with name/selected
+            this.topicsExcellentForEnhanced.push({
+              name: prop,
+              subtopics: this.topics[prop].map(item => {
+                let rObj = {};
+                rObj.name = item;
+                rObj.selected = false;
+                // console.log(rObj);
+                return rObj;
+              })
+            });
+            this.topicsGoodForEnhanced.push({
+              name: prop,
+              subtopics: this.topics[prop].map(item => {
+                let rObj = {};
+                rObj.name = item;
+                rObj.selected = false;
+                // console.log(rObj);
+                return rObj;
+              })
+            });
+          }
+        } else {
+          alert("No such document!");
         }
-      } else {
-        alert("No such document!");
-      }
-    }).then(val => {
-       this.topicsExcellentForEnhanced.forEach(i => {
+      })
+      .then(val => {
+        this.topicsExcellentForEnhanced.forEach(i => {
           //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
-            i.subtopics.forEach(j => {
-                if (_.includes(this.database.excellentFor, j.name)) {
+          i.subtopics.forEach(j => {
+            if (_.includes(this.database.excellentFor, j.name)) {
               // console.log("yay");
               j.selected = true;
             } else {
               // console.log(j.name, "false");
             }
-            });
-
-           
           });
-           this.topicsGoodForEnhanced.forEach(i => {
+        });
+        this.topicsGoodForEnhanced.forEach(i => {
           //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
-            i.subtopics.forEach(j => {
-                if (_.includes(this.database.goodFor, j.name)) {
+          i.subtopics.forEach(j => {
+            if (_.includes(this.database.goodFor, j.name)) {
               // console.log("yay");
               j.selected = true;
             } else {
               // console.log(j.name, "false");
             }
-            });
-
-           
           });
-    });
+        });
+      });
   },
   methods: {
+    initialData() {
+      this.database.name = "";
+      this.database.description = "";
+      this.database.url = "";
+      this.database.use_proxy = false;
+      this.database.vendor = "";
+      this.database.featurable = false;
+      this.database.content_types = [];
+      this.database.excellentFor = [];
+      this.database.goodFor = [];
+      // this.contentTypesController = [];
+      // this.topicsExcellentForEnhanced = [];
+      // this.topicsGoodForEnhanced = [];
+      if (this.topicsExcellentForEnhanced.length > 0) {
+        this.topicsExcellentForEnhanced.forEach(i => {
+          i.subtopics.forEach(j => {
+            j.selected = false;
+          });
+        });
+      }
+      if (this.topicsGoodForEnhanced.length > 0) {
+        this.topicsGoodForEnhanced.forEach(i => {
+          i.subtopics.forEach(j => {
+            j.selected = false;
+          });
+        });
+      }
+      if (this.contentTypesController.length > 0) {
+        this.contentTypesController.forEach(i => {
+          i.selected = false;
+        });
+      }
+    },
+
     sendUpdate(evt) {
-        this.prepCTforSubmit();
-        this.prepTopicsforSubmit();
+      this.prepCTforSubmit();
+      this.prepTopicsforSubmit();
 
       evt.preventDefault();
       const updateRef = firebase
@@ -216,9 +238,18 @@ export default {
         .collection("databases")
         .doc(this.database.name)
         .set(this.database, { merge: true });
+
+      this.$toast.open({
+        message: "Database submitted!",
+        type: "is-success"
+      });
+      this.initialData();
+      this.$forceUpdate();
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     },
     goHome() {
-      router.push("/databases-list");
+      router.push("/");
     },
     prepCTforSubmit() {
       //empty the array to get ready for all the new values!

@@ -49,12 +49,12 @@ export default {
     };
   },
   created() {
-    const ref = firebase
+    const ref2 = firebase
       .firestore()
       .collection("topic-areas")
       .doc("forDatabases");
 
-    ref.get().then(doc => {
+    ref2.get().then(doc => {
       if (doc.exists) {
         console.log(doc.data());
         this.topics = doc.data();

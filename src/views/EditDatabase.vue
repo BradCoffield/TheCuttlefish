@@ -104,11 +104,9 @@ export default {
       contentTypesFromFirestore: [],
       docData: {},
       topics: [],
-      topicsTopLevel: [],
       topicsSelected: [],
       topicsExcellentForEnhanced: [],
       topicsGoodForEnhanced: [],
-      efFromFirestore: []
     };
   },
   created() {
@@ -180,8 +178,7 @@ export default {
         console.log(this.topics);
 
         for (const prop in this.topics) {
-          //create an array with just the top level topics
-          this.topicsTopLevel.push(prop);
+       
           //create an array that matches "topics" except has objects with name/selected
           this.topicsExcellentForEnhanced.push({
             name: prop,

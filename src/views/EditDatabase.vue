@@ -34,7 +34,7 @@
             :key="index"
           >
             <button
-              class="button lil-space-here is-small"
+              class="button lil-space-here"
               :class="{'is-success':item.selected, 'is-text':!item.selected}"
               @click="item.selected=!item.selected"
             >{{item.name}}</button>
@@ -43,13 +43,13 @@
       </b-field>
 
       <b-field label="Excellent For">
-        <ul v-if="topicsExcellentForEnhanced.length > 0">
+        <ul class="ml-1 mt-1" v-if="topicsExcellentForEnhanced.length > 0">
           <li v-for="(item, index) in topicsExcellentForEnhanced" :key="index">
-            {{item.name}}
+            <span class="sub-label">{{item.name}}</span>
             <br>
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here is-small"
+              class="button lil-space-here"
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -58,13 +58,13 @@
         </ul>
       </b-field>
       <b-field label="Good For">
-        <ul v-if="topicsGoodForEnhanced.length > 0">
+        <ul class="ml-1 mt-1" v-if="topicsGoodForEnhanced.length > 0">
           <li v-for="(item, index) in topicsGoodForEnhanced" :key="index">
-            {{item.name}}
+            <span class="sub-label">{{item.name}}</span>
             <br>
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here is-small"
+              class="button lil-space-here"
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -81,8 +81,40 @@
         <button @click="goHome" class="button is-danger">
           <span class="mdi mdi-cancel"></span> Cancel
         </button>
+        <button class=" button float-right " @click="deleteWarningActive = true" ><span class="mdi mdi-alert-octagram  "></span>Delete Database</button>
       </div>
     </section>
+    <b-modal :active.sync="deleteWarningActive" :width="640" scroll="keep">
+      <div class="card">
+        <!-- <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="/static/img/placeholder-1280x960.png" alt="Image">
+                    </figure>
+        </div>-->
+        <div class="card-content">
+          <div class="media">
+            <!-- <div class="media-left">
+                            <figure class="image is-48x48">
+                              
+                            </figure>
+            </div>-->
+            <div class="media-content">
+              <p class="title is-4">
+                <span class="mdi mdi-alert-octagram has-text-danger fs24"></span>
+                Delete Database: {{database.name}}
+              </p>
+               
+            </div>
+          </div>
+
+          <div class="content mt-2">
+           Hey, no judgement, but are you sure you want to do this? It can't be undone.
+           <div class="has-text-right mt-2"><button class="button is-text" @click="deleteWarningActive = false">Cancel</button>
+           <button class="button is-danger" @click="deleteThisDatabase">Delete</button></div>
+          </div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -91,7 +123,7 @@ import firebase from "../Firebase";
 import router from "../router";
 import _ from "lodash";
 // import contentTypesList from "../components/editDatabases/EditDatabasesContentTypes";
-import relevantTopics from "../components/editDatabases/RelevantTopics";
+// import relevantTopics from "../components/editDatabases/RelevantTopics";
 export default {
   name: "editDatabase",
   data() {
@@ -107,6 +139,7 @@ export default {
       topicsGfSelected: [],
       topicsExcellentForEnhanced: [],
       topicsGoodForEnhanced: [],
+      deleteWarningActive: false
     };
   },
   created() {
@@ -171,69 +204,65 @@ export default {
       .collection("topic-areas")
       .doc("forDatabases");
 
-    ref2.get().then(doc => {
-      if (doc.exists) {
-        console.log(doc.data());
-        this.topics = doc.data();
-        console.log(this.topics);
+    ref2
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          console.log(doc.data());
+          this.topics = doc.data();
+          console.log(this.topics);
 
-        for (const prop in this.topics) {
-       
-          //create an array that matches "topics" except has objects with name/selected
-          this.topicsExcellentForEnhanced.push({
-            name: prop,
-            subtopics: this.topics[prop].map(item => {
-              let rObj = {};
-              rObj.name = item;
-              rObj.selected = false;
-              // console.log(rObj);
-              return rObj;
-            })
-          });
-          this.topicsGoodForEnhanced.push({
-            name: prop,
-            subtopics: this.topics[prop].map(item => {
-              let rObj = {};
-              rObj.name = item;
-              rObj.selected = false;
-              // console.log(rObj);
-              return rObj;
-            })
-          });
-
-         
+          for (const prop in this.topics) {
+            //create an array that matches "topics" except has objects with name/selected
+            this.topicsExcellentForEnhanced.push({
+              name: prop,
+              subtopics: this.topics[prop].map(item => {
+                let rObj = {};
+                rObj.name = item;
+                rObj.selected = false;
+                // console.log(rObj);
+                return rObj;
+              })
+            });
+            this.topicsGoodForEnhanced.push({
+              name: prop,
+              subtopics: this.topics[prop].map(item => {
+                let rObj = {};
+                rObj.name = item;
+                rObj.selected = false;
+                // console.log(rObj);
+                return rObj;
+              })
+            });
+          }
+        } else {
+          alert("No such document!");
         }
-      } else {
-        alert("No such document!");
-      }
-    }).then(val => {
-       this.topicsExcellentForEnhanced.forEach(i => {
+      })
+      .then(val => {
+        this.topicsExcellentForEnhanced.forEach(i => {
           //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
-            i.subtopics.forEach(j => {
-                if (_.includes(this.database.excellentFor, j.name)) {
+          i.subtopics.forEach(j => {
+            if (_.includes(this.database.excellentFor, j.name)) {
               // console.log("yay");
               j.selected = true;
             } else {
               // console.log(j.name, "false");
             }
-            });
-
-           
           });
-           this.topicsGoodForEnhanced.forEach(i => {
+        });
+        this.topicsGoodForEnhanced.forEach(i => {
           //for each unit look at its subtopics and for each of those compare its name to what came back from firestore and if there's a match switch it to selected otherwise do nothing.
-            i.subtopics.forEach(j => {
-                if (_.includes(this.database.goodFor, j.name)) {
+          i.subtopics.forEach(j => {
+            if (_.includes(this.database.goodFor, j.name)) {
               // console.log("yay");
               j.selected = true;
             } else {
               // console.log(j.name, "false");
             }
-            });
-
-           
           });
-    });
+        });
+      });
   },
 
   methods: {
@@ -247,6 +276,11 @@ export default {
         .collection("databases")
         .doc(this.$route.params.id)
         .set(this.database, { merge: true });
+      this.$toast.open({
+        message: "Database Updated!",
+        type: "is-success"
+      });
+      this.goHome();
       // updateRef();
     },
     goHome() {
@@ -265,30 +299,43 @@ export default {
         z++;
       });
     },
-    prepTopicsforSubmit(){
+    prepTopicsforSubmit() {
       //clears out the relevant database obj and checks what buttons are selected and adds them to it for submitting.
       this.database.goodFor = [];
       this.database.excellentFor = [];
-       this.topicsExcellentForEnhanced.forEach(i => {
-         i.subtopics.forEach(q => {
-               if (q.selected === true){
-                 this.database.excellentFor.push(q.name);
-               }
+      this.topicsExcellentForEnhanced.forEach(i => {
+        i.subtopics.forEach(q => {
+          if (q.selected === true) {
+            this.database.excellentFor.push(q.name);
+          }
+        });
+      });
+      this.topicsGoodForEnhanced.forEach(i => {
+        i.subtopics.forEach(q => {
+          if (q.selected === true) {
+            this.database.goodFor.push(q.name);
+          }
+        });
+      });
+    },
+    deleteThisDatabase() {
+      firebase
+      .firestore()
+      .collection("databases")
+      .doc(this.$route.params.id).delete().then(function() {
+    console.log("Document successfully deleted!");
+    //  this.$toast.open({
+    //     message: "Database Deleted!",
+    //     type: "is-success"
+    //   });
+      router.push('/databases-list')
 
-         })
-       })
-       this.topicsGoodForEnhanced.forEach(i => {
-         i.subtopics.forEach(q => {
-               if (q.selected === true){
-                 this.database.goodFor.push(q.name);
-               }
-
-         })
-       })
-      
+}).catch(function(error) {
+    console.error("Error removing document: ", error);
+});
     }
   },
-  components: { relevantTopics }
+  components: {   }
 };
 </script>
 
@@ -297,11 +344,7 @@ export default {
   font-weight: bold;
   font-size: 2rem;
 } */
-.field {
-  padding: 1rem;
-}
-
-.form-buttons {
-  margin-bottom: 2rem;
+.mdi-alert-octagram.fs24 {
+  font-size: 24px;
 }
 </style>

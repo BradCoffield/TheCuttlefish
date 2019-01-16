@@ -34,7 +34,7 @@
             :key="index"
           >
             <button
-              class="button lil-space-here is-small"
+              class="button lil-space-here "
               :class="{'is-success':item.selected, 'is-text':!item.selected}"
               @click="item.selected=!item.selected"
             >{{item.name}}</button>
@@ -45,11 +45,11 @@
       <b-field label="Excellent For">
         <ul class="ml-1 mt-1" v-if="topicsExcellentForEnhanced.length > 0">
           <li v-for="(item, index) in topicsExcellentForEnhanced" :key="index">
-            {{item.name}}
+            <span class="sub-label">{{item.name}}</span>
             <br>
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here is-small"
+              class="button lil-space-here  "
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -57,14 +57,14 @@
           </li>
         </ul>
       </b-field>
-      <b-field label="Good For">
+      <b-field label="Good For">  
         <ul class="ml-1 mt-1" v-if="topicsGoodForEnhanced.length > 0">
           <li v-for="(item, index) in topicsGoodForEnhanced" :key="index">
-            {{item.name}}
+            <span class="sub-label">{{item.name}}</span>
             <br>
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here is-small"
+              class="button lil-space-here  "
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -81,6 +81,7 @@
         </button>
       </div>
     </section>
+    
   </div>
 </template>
 

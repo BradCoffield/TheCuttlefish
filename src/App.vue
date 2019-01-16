@@ -5,11 +5,11 @@
        
       <router-link to="/databases-list">Databases List</router-link> |
       <router-link to="/add-database">Add Database</router-link> |
-      <router-link to="/edit-proxy">Edit Proxy</router-link> |
+      <router-link to="/edit-proxy">Edit Proxy</router-link> 
 
   
     </div>
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 

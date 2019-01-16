@@ -6,7 +6,7 @@
       :mobile-cards="true"
       detailed
       paginated
-      per-page="10"
+      per-page="15"
       :loading="isLoading"
     >
       <template slot-scope="props">
@@ -17,7 +17,7 @@
           field="database_name"
           label="Database"
           width="350"
-          sortable
+         
         >{{ props.row.name }}</b-table-column>
 
         <b-table-column
@@ -27,8 +27,8 @@
         >{{ props.row.description }}</b-table-column>
 
         <b-table-column field="url" label="URL">{{ props.row.url }}</b-table-column>
-        <b-table-column field="vendor" label="Vendor" sortable>{{ props.row.vendor }}</b-table-column>
-        <b-table-column field="featureable" label="Featureable" sortable>{{ props.row.featureable }}</b-table-column>
+        <b-table-column field="vendor" label="Vendor"  >{{ props.row.vendor }}</b-table-column>
+        <b-table-column field="featureable" label="Featureable"  >{{ props.row.featureable }}</b-table-column>
         <b-table-column field="editButton" label=" ">
           <button class="button is-light" @click.stop="editDatabase(props.row.key)">Edit</button>
           <!-- <button @click="alerrrt(props.row.key)">Edit</button> -->
@@ -110,9 +110,9 @@ export default {
 #table-goodFor {
   font-size: 12px;
 }
-.table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
+/* .table.is-striped tbody tr:not(.is-selected):nth-child(2n) {
   background-color: #ececec !important;
-}
+} */
 .mdi.mdi-chevron-right {
   color: goldenrod;
 }

@@ -196,6 +196,7 @@ export default {
   },
   methods: {
     initialData() {
+      //all this just resets the form to base clear state
       this.database.name = "";
       this.database.description = "";
       this.database.url = "";
@@ -205,9 +206,7 @@ export default {
       this.database.content_types = [];
       this.database.excellentFor = [];
       this.database.goodFor = [];
-      // this.contentTypesController = [];
-      // this.topicsExcellentForEnhanced = [];
-      // this.topicsGoodForEnhanced = [];
+   
       if (this.topicsExcellentForEnhanced.length > 0) {
         this.topicsExcellentForEnhanced.forEach(i => {
           i.subtopics.forEach(j => {

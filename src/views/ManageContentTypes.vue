@@ -11,17 +11,17 @@
         :key="index"
         style="display:inline-block;"
       >
-        <div v-if="ct.edit" class="columns">
+        <div v-if="ct.edit" class="noisebackground mt-1 pad-1">
           <input
             class="input"
             v-model="ct.name"
              
             v-focus
           >
-          <button class="button is-danger" @click="deleteThisOne(ct.name)" v-if="ct.name">Delete</button>
+          <div class="form-buttons"><button class="button is-danger" @click="deleteThisOne(ct.name)" v-if="ct.name">Delete</button>
           <button class="button is-success" @click="ct.edit=false" style="margin-left:5px;">
-            <span class="mdi mdi-check"></span>
-          </button>
+          <span class="mdi mdi-check"></span>
+          </button></div>
         </div>
 
         <div v-else>

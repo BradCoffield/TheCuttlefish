@@ -7,6 +7,7 @@ import AddDatabase from './views/AddDatabase.vue'
 import EditDatabase from './views/EditDatabase.vue'
 import EditProxy from './views/EditProxy.vue'
 import ManageContentTypes from './views/ManageContentTypes'
+import ManageTopicAreas from './views/ManageTopicAreas'
  
 
 Vue.use(Router)
@@ -44,6 +45,11 @@ export default new Router({
       path: '/manage-content-types',
       name: 'ManageContentTypes',
       component: ManageContentTypes
+    },
+    {
+      path: '/manage-topic-areas',
+      name: 'ManageTopicAreas',
+      component: ManageTopicAreas
     },
   
     

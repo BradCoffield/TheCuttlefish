@@ -18,15 +18,7 @@
              
             v-focus
           >
-        <!-- <div v-if="ct.edit" class="columns">
-          <input
-            class="input"
-            v-model="ct.name"
-            @blur="ct.edit = false;  "
-            @keyup.enter="ct.edit=false;  "
-            v-focus
-          > -->
-          <button class="button is-danger" @click="deleteThisOne(ct.name)">Delete</button>
+          <button class="button is-danger" @click="deleteThisOne(ct.name)" v-if="ct.name">Delete</button>
           <button class="button is-success" @click="ct.edit=false" style="margin-left:5px;">
             <span class="mdi mdi-check"></span>
           </button>

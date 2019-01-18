@@ -6,6 +6,7 @@ import DatabasesList from './views/DatabasesList.vue'
 import AddDatabase from './views/AddDatabase.vue'
 import EditDatabase from './views/EditDatabase.vue'
 import EditProxy from './views/EditProxy.vue'
+import ManageContentTypes from './views/ManageContentTypes'
  
 
 Vue.use(Router)
@@ -38,6 +39,11 @@ export default new Router({
       path: '/edit-proxy',
       name: 'editProxy',
       component: EditProxy
+    },
+    {
+      path: '/manage-content-types',
+      name: 'ManageContentTypes',
+      component: ManageContentTypes
     },
   
     

@@ -74,6 +74,7 @@ export default {
       this.data = [];
       querySnapshot.forEach(doc => {
         console.log(doc.data())
+        // console.log(doc.data())
         this.data.push({
           key: doc.id,
           name: doc.data().name,

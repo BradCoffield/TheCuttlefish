@@ -9,7 +9,11 @@
       <router-link to="/manage-topic-areas">Manage Topic Areas</router-link>|  <div id="firebaseui-auth-container" ></div><a href="" @click="logOut">Log out</a>
     </div>
    
-    
+     <div>
+       <div style="float:left">You are currently:&nbsp;&nbsp;</div><div id="sign-in-status" ></div>
+     </div>
+    <!-- <div id="sign-in"></div> -->
+    <!-- <pre id="account-details"></pre> -->
 
     <router-view :key="$route.fullPath"/>
   </div>
@@ -41,7 +45,48 @@ methods: {
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
-    }
+
+
+
+      let initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var phoneNumber = user.phoneNumber;
+            var providerData = user.providerData;
+            user.getIdToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = 'Signed in';
+              document.getElementById('sign-in').textContent = 'Sign out';
+              document.getElementById('account-details').textContent = JSON.stringify({
+                displayName: displayName,
+                email: email,
+                emailVerified: emailVerified,
+                phoneNumber: phoneNumber,
+                photoURL: photoURL,
+                uid: uid,
+                accessToken: accessToken,
+                providerData: providerData
+              }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('sign-in').textContent = 'Sign in';
+            document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      }();
+
+       
+      }
+    
 
 };
 </script>

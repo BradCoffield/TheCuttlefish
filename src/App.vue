@@ -14,12 +14,12 @@
       
     </div>
 
-    <!-- <div>
-      <div style="float:left">You are currently:&nbsp;&nbsp;</div>
+     <div>
+     
       <div id="sign-in-status"></div>
-    </div> -->
-    <!-- <div id="sign-in"></div> -->
-    <!-- <pre id="account-details"></pre> -->
+    </div> 
+    <!-- <div id="sign-in"></div>  
+    <pre id="account-details"></pre> -->
     <router-view :key="$route.fullPath"/>
   </div>
 </template>
@@ -33,7 +33,8 @@ import * as firebaseui from "firebaseui";
 export default {
   data() {
     return {
-      user: false
+      userName: "",
+      userEmail:""
     };
   },
   methods: {
@@ -57,7 +58,7 @@ export default {
       firebase.auth().onAuthStateChanged(
         function(user) {
           if (user) {
-            this.user = true;
+           
             // User is signed in.
             var displayName = user.displayName;
             var email = user.email;
@@ -66,29 +67,32 @@ export default {
             var uid = user.uid;
             var phoneNumber = user.phoneNumber;
             var providerData = user.providerData;
+      
+            console.log(email)
             user.getIdToken().then(function(accessToken) {
+               
               document.getElementById("sign-in-status").textContent =
-                "Signed in";
-              document.getElementById("sign-in").textContent = "Sign out";
-              document.getElementById(
-                "account-details"
-              ).textContent = JSON.stringify(
-                {
-                  displayName: displayName,
-                  email: email,
-                  emailVerified: emailVerified,
-                  phoneNumber: phoneNumber,
-                  photoURL: photoURL,
-                  uid: uid,
-                  accessToken: accessToken,
-                  providerData: providerData
-                },
-                null,
-                "  "
-              );
+                `Signed in as ${email}`;
+              // document.getElementById("sign-in").textContent = "Sign out";
+              // document.getElementById(
+              //   "account-details"
+              // ).textContent = JSON.stringify(
+              //   {
+              //     displayName: displayName,
+              //     email: email,
+              //     emailVerified: emailVerified,
+              //     phoneNumber: phoneNumber,
+              //     photoURL: photoURL,
+              //     uid: uid,
+              //     accessToken: accessToken,
+              //     providerData: providerData
+              //   },
+              //   null,
+              //   "  "
+              // );
             });
           } else {
-            this.user = false;
+        
             // User is signed out.
             document.getElementById("sign-in-status").textContent =
               "Signed out";

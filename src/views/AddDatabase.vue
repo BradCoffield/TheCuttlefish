@@ -73,11 +73,11 @@
         </ul>
       </b-field>
       <div class="form-buttons">
-        <button @click="sendUpdate" class="button is-info">
-          <span class="mdi mdi-check"></span> Update
-        </button>
+       
         <button @click="goHome" class="button is-danger">
           <span class="mdi mdi-cancel"></span> Cancel
+        </button> <button @click="sendUpdate" class="button is-info">
+          <span class="mdi mdi-check"></span> Update
         </button>
       </div>
     </section>

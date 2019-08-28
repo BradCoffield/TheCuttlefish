@@ -44,10 +44,10 @@ export default {
   },
 
   created() {
-    var uiConfig = {
-      signInSuccessUrl: "/databases-list",
-      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
-    };
+      var uiConfig = {
+        signInSuccessUrl: "/databases-list",
+        signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
+      };
 
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());

@@ -5,8 +5,7 @@
       :striped="true"
       :mobile-cards="true"
       detailed
-      paginated
-      per-page="15"
+  
       :loading="isLoading"
     >
       <template slot-scope="props">

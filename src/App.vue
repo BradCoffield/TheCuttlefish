@@ -1,15 +1,61 @@
 <template>
   <div id="app">
+   <template>
+    <b-navbar>
+        <template slot="brand">
+            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                <!-- <img
+                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+                    alt="Lightweight UI components for Vue.js based on Bulma"
+                > --><span id="library-logo-text" style="font-weight:bold">RMC Library Data Manager</span>
+            </b-navbar-item>
+        </template>
+        <template slot="start">
+          
+       
+            <b-navbar-dropdown label="Databases">
+                <b-navbar-item  >
+                    <router-link to="/databases-list">Databases List</router-link>
+                </b-navbar-item>
+                <b-navbar-item  >
+                      <router-link to="/add-database">Add Database</router-link>
+                </b-navbar-item>
+                 <hr class="navbar-divider">
+                <b-navbar-item> <router-link to="/edit-proxy">Edit Proxy</router-link></b-navbar-item>
+            </b-navbar-dropdown>
+            <b-navbar-dropdown label="Metadata">
+                <b-navbar-item  >
+                    <router-link to="/manage-content-types">Content Types</router-link>
+                </b-navbar-item>
+                <b-navbar-item  >
+                      <router-link to="/manage-topic-areas">Topic Areas</router-link>
+                </b-navbar-item>
+            </b-navbar-dropdown>
+        </template>
+
+        <template slot="end">
+            <b-navbar-item tag="div">
+                <div class="buttons">
+                      <div id="firebaseui-auth-container"></div>    <div id="sign-in-status"></div><a href @click="logOut">&nbsp;| Log out</a> 
+                    <!-- <a class="button is-light">
+                        Log in
+                    </a> -->
+                </div>
+            </b-navbar-item>
+        </template>
+    </b-navbar>
+</template>
+
     <div id="nav">
-      <router-link to="/">Home</router-link>|
+      <!-- <router-link to="/">Home</router-link>|
       <router-link to="/databases-list">Databases List</router-link>|
       <router-link to="/add-database">Add Database</router-link>|
       <router-link to="/edit-proxy">Edit Proxy</router-link>|
       <router-link to="/manage-content-types">Manage Content Types</router-link>|
       <router-link to="/manage-topic-areas">Manage Topic Areas</router-link>|
-     <a href @click="logOut">Log out</a>
+     <a href @click="logOut">Log out</a> -->
       <div >
-        <div id="firebaseui-auth-container"></div>
+        <!-- <div id="firebaseui-auth-container"></div> -->
       </div>
       
     </div>

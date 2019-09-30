@@ -8,6 +8,8 @@ import EditDatabase from './views/EditDatabase.vue'
 import EditProxy from './views/EditProxy.vue'
 import ManageContentTypes from './views/ManageContentTypes'
 import ManageTopicAreas from './views/ManageTopicAreas'
+import VisualizeDatabaseContentTypes from './views/VisualizeDatabaseContentTypes.vue'
+import VisualizeDatabaseTopicAreas from './views/VisualizeDatabaseTopicAreas.vue'
  
 
 Vue.use(Router)
@@ -50,6 +52,16 @@ export default new Router({
       path: '/manage-topic-areas',
       name: 'ManageTopicAreas',
       component: ManageTopicAreas
+    },
+    {
+      path:'/visualize-database-content-types',
+      name: 'visualizeDatabaseContentTypes',
+      component: VisualizeDatabaseContentTypes
+    },
+    {
+      path:'/visualize-database-topic-areas',
+      name: 'visualizeDatabaseTopicAreas',
+      component: VisualizeDatabaseTopicAreas
     },
   
     

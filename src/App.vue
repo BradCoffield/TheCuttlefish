@@ -31,6 +31,14 @@
                       <router-link to="/manage-topic-areas">Topic Areas</router-link>
                 </b-navbar-item>
             </b-navbar-dropdown>
+                <b-navbar-dropdown label="Visualizations">
+                <b-navbar-item  >
+                    <router-link to="/visualize-database-content-types">Database Content Types</router-link>
+                </b-navbar-item>
+                <b-navbar-item  >
+                      <router-link to="/visualize-database-topic-areas">Database Topic Areas</router-link>
+                </b-navbar-item>
+            </b-navbar-dropdown>
         </template>
 
         <template slot="end">

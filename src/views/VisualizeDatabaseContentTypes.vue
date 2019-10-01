@@ -21,30 +21,33 @@ export default {
       rawDatabasesData: [],
       chartData: {
         type: "bar",
-        labels: ["eh"],
-        datasets: [
-          {
-            backgroundColor: [
-              "rgba(255, 99, 132, 1)",
-              "#4e79a7",
-              "#ffbe7d",
-              "#8cd17d",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-              "#a0cbe8",
-              "#f28e2b",
-              "#fabfd2"
-            ],
-            data: [1]
-          }
-        ]
-      },
-      options: {
+        data: {
+          labels: [],
+          datasets: [
+            {
+              data: [],
+              backgroundColor: [
+                "rgba(255, 99, 132, 1)",
+                "#4e79a7",
+                "#ffbe7d",
+                "#8cd17d",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+                "#a0cbe8",
+                "#f28e2b",
+                "#fabfd2"
+              ]
+            }
+          ]
+        }, options: {
+        responsive: true,
         legend: { display: false }
       }
+      },
+     
     };
   },
   created() {
@@ -73,19 +76,10 @@ export default {
           });
         });
         this.addLabels(this.contentTypes);
-        this.addData(this.contentTypesCounter)
-       
+        this.addData(this.contentTypesCounter);
+        // this.createChart("database-content-types-viz", this.chartData);
       });
     });
-    // .then(function() {
-    //   rawDatabasesData.forEach(rr => {
-    //     rr.content_types.forEach(ii => {
-    //       contentTypesCounter.forEach(params => {
-    //         if (params.hasOwnProperty(ii)) params[ii]++;
-    //       });
-    //     });
-    //   });
-    // });
   },
   methods: {
     createChart(chartId, chartData) {
@@ -99,20 +93,19 @@ export default {
     addLabels(labelData) {
       let chartData = this.chartData;
       labelData.forEach(i => {
-        chartData.labels.push(i);
+        chartData.data.labels.push(i);
       });
     },
     addData(datum) {
-    // console.log(datum);
-    let chartData = this.chartData;
-    datum.forEach(tt => {
-      let madValue = Object.values(tt);
-      chartData.datasets[0].data.push(madValue[0]);
-    });
+      // console.log(datum);
+      let chartData = this.chartData;
+      datum.forEach(tt => {
+        let madValue = Object.values(tt);
+        chartData.data.datasets[0].data.push(madValue[0]);
+      });
+      console.log("sup", chartData);
       this.createChart("database-content-types-viz", this.chartData);
-     
-  
-  }
+    }
   },
   mounted() {
     // this.createChart("database-content-types-viz", this.chartData);

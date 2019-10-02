@@ -163,3 +163,9 @@ export default {
 };
 </script>
 
+<style>
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap');
+h1, h2, h3, h4 {font-family: 'Raleway', sans-serif;}
+p, span, tbody, .th-wrap, a, .button, .label {font-family: 'Raleway', sans-serif;}
+</style> 

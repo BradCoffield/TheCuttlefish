@@ -26,28 +26,29 @@ export default {
           labels: [],
           datasets: [
             {
-              data: [],
-              backgroundColor: [
-                "rgba(255, 99, 132, 1)",
-                "#4e79a7",
-                "#ffbe7d",
-                "#8cd17d",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)",
-                "#a0cbe8",
-                "#f28e2b",
-                "#fabfd2"
-              ]
-            }
+              label: ["Excellent For"],
+              backgroundColor:     "#0f52ba",
+              data: []
+            },
+            { label: ["Good For"], data: [], backgroundColor: "#4f97a3" }
           ]
         },
         options: {
-          responsive: true,
-          legend: { display: false }
-        }
+      legend: {  },
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      responsive: true,
+      scales: {
+        xAxes: [{
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    }
       }
     };
   },
@@ -63,27 +64,43 @@ export default {
       querySnapshot.forEach(doc => {
         let theData = doc.data();
         this.broadTopics.push(Object.keys(theData)); //creates an array of strings with top level areas, like Humanities
-           this.broadTopics[0].forEach(top => {
-        console.log(top);
-        // console.log(theData[top]);
-        theData[top].forEach(params => {
-          this.topicAreas.push(params);
-        }); //this uses those top-level areas to get the individual topic areas and push them all into a new, flat array
-         this.topicAreas.forEach(tt => {
-        this.topicAreasCounter.push({ name: tt, excellentFor: 0, goodFor: 0 }); //this builds a new array of objects with the topic areas and counters for possibilities. This will get modified based on our real data and then used to populate our chart. Hopefully.
-      });
-      });
+        this.broadTopics[0].forEach(top => {
+          console.log(top);
+          // console.log(theData[top]);
+          theData[top].forEach(params => {
+            this.topicAreas.push(params);
+          }); //this uses those top-level areas to get the individual topic areas and push them all into a new, flat array
+          this.topicAreas.forEach(tt => {
+            this.topicAreasCounter.push({
+              name: tt,
+              excellentFor: 0,
+              goodFor: 0
+            }); //this builds a new array of objects with the topic areas and counters for possibilities. This will get modified based on our real data and then used to populate our chart. Hopefully.
+          });
+        });
+        this.rawDatabasesData.forEach(db => {
+          if (db.excellentFor) {
+            db.excellentFor.forEach(efi => {
+              this.topicAreasCounter.forEach(ta => {
+                if (ta.name == efi) {
+                  ta.excellentFor++;
+                }
+              });
+            });
+          }
+          if (db.goodFor) {
+            db.goodFor.forEach(gfi => {
+              this.topicAreasCounter.forEach(ta => {
+                if (ta.name == gfi) {
+                  ta.goodFor++;
+                }
+              });
+            });
+          }
+        });
+        this.addDataAndLabels("hi");
       });
     });
-    // .then(function() {
-    //   rawDatabasesData.forEach(rr => {
-    //     rr.content_types.forEach(ii => {
-    //       contentTypesCounter.forEach(params => {
-    //         if (params.hasOwnProperty(ii)) params[ii]++;
-    //       });
-    //     });
-    //   });
-    // });
   },
   methods: {
     createChart(chartId, chartData) {
@@ -94,20 +111,13 @@ export default {
         options: chartData.options
       });
     },
-    addLabels(labelData) {
-      let chartData = this.chartData;
-      labelData.forEach(i => {
-        chartData.data.labels.push(i);
+    addDataAndLabels() {
+      this.topicAreasCounter.forEach(tt => {
+        this.chartData.data.labels.push(tt.name);
+        this.chartData.data.datasets[0].data.push(tt.excellentFor);
+        this.chartData.data.datasets[1].data.push(tt.goodFor);
       });
-    },
-    addData(datum) {
-      // console.log(datum);
-      let chartData = this.chartData;
-      datum.forEach(tt => {
-        let madValue = Object.values(tt);
-        chartData.datasets[0].data.push(madValue[0]);
-      });
-      this.createChart("database-topic-areas-viz", this.chartData);
+      this.createChart("database-topic-areas-viz", this.chartData)
     }
   }
 };

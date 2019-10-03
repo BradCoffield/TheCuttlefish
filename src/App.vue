@@ -44,7 +44,9 @@
         <template slot="end">
             <b-navbar-item tag="div">
                 <div class="buttons">
-                      <div id="firebaseui-auth-container"></div>    <div id="sign-in-status"></div><a href @click="logOut">&nbsp;| Log out</a> 
+                  <!-- <div v-if="loggedStatus">hi</div> -->
+                      <div id="firebaseui-auth-container"></div>   
+                       <div id="sign-in-status"></div><a href @click="logOut">&nbsp;| Log out</a> 
                     <!-- <a class="button is-light">
                         Log in
                     </a> -->
@@ -54,23 +56,11 @@
     </b-navbar>
 </template>
 
-    <div id="nav">
-      <!-- <router-link to="/">Home</router-link>|
-      <router-link to="/databases-list">Databases List</router-link>|
-      <router-link to="/add-database">Add Database</router-link>|
-      <router-link to="/edit-proxy">Edit Proxy</router-link>|
-      <router-link to="/manage-content-types">Manage Content Types</router-link>|
-      <router-link to="/manage-topic-areas">Manage Topic Areas</router-link>|
-     <a href @click="logOut">Log out</a> -->
-      <div >
-        <!-- <div id="firebaseui-auth-container"></div> -->
-      </div>
-      
-    </div>
+    
 
      <div>
      
-      <div id="sign-in-status"></div>
+      <!-- <div id="sign-in-status"></div> -->
     </div> 
     <!-- <div id="sign-in"></div>  
     <pre id="account-details"></pre> -->
@@ -88,7 +78,8 @@ export default {
   data() {
     return {
       userName: "",
-      userEmail:""
+      userEmail:"",
+    
     };
   },
   methods: {
@@ -98,6 +89,9 @@ export default {
   },
 
   created() {
+       let loggedStatus = this.loggedStatus;
+             console.log( firebase.auth().currentUser)
+
       var uiConfig = {
         signInSuccessUrl: "/databases-list",
         signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
@@ -109,7 +103,9 @@ export default {
     ui.start("#firebaseui-auth-container", uiConfig);
 
     let initApp = (function() {
+     
       firebase.auth().onAuthStateChanged(
+      
         function(user) {
           if (user) {
            
@@ -124,7 +120,7 @@ export default {
       
             console.log(email)
             user.getIdToken().then(function(accessToken) {
-               
+              
               document.getElementById("sign-in-status").textContent =
                 `Signed in as ${email}`;
               // document.getElementById("sign-in").textContent = "Sign out";
@@ -145,8 +141,9 @@ export default {
               //   "  "
               // );
             });
+
           } else {
-        
+      
             // User is signed out.
             // document.getElementById("sign-in-status").textContent =
             //   "Signed out";

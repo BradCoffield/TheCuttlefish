@@ -1,5 +1,6 @@
 <template>
   <section>
+   <h2 class="title">Databases List</h2>
     <b-table
       :data="data"
       :striped="true"

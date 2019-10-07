@@ -10,6 +10,7 @@ import ManageContentTypes from './views/ManageContentTypes'
 import ManageTopicAreas from './views/ManageTopicAreas'
 import VisualizeDatabaseContentTypes from './views/VisualizeDatabaseContentTypes.vue'
 import VisualizeDatabaseTopicAreas from './views/VisualizeDatabaseTopicAreas.vue'
+import AddFeaturedCollection from './views/AddFeaturedCollection.vue'
  
 
 Vue.use(Router)
@@ -62,6 +63,11 @@ export default new Router({
       path:'/visualize-database-topic-areas',
       name: 'visualizeDatabaseTopicAreas',
       component: VisualizeDatabaseTopicAreas
+    },
+    {
+      path:'/add-featured-collection',
+      name: 'addFeaturedCollection',
+      component: AddFeaturedCollection
     },
   
     

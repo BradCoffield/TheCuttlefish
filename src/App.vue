@@ -44,9 +44,9 @@
         <template slot="end">
             <b-navbar-item tag="div">
                 <div class="buttons">
-                  <!-- <div v-if="loggedStatus">hi</div> -->
+                   
                       <div id="firebaseui-auth-container"></div>   
-                       <div id="sign-in-status"></div><a href @click="logOut">&nbsp;| Log out</a> 
+                       <div id="sign-in-status"></div><a @click="logOut" id="logoutlink">&nbsp;| Log out</a> 
                     <!-- <a class="button is-light">
                         Log in
                     </a> -->
@@ -79,6 +79,7 @@ export default {
     return {
       userName: "",
       userEmail:"",
+      
     
     };
   },
@@ -103,6 +104,8 @@ export default {
     ui.start("#firebaseui-auth-container", uiConfig);
 
     let initApp = (function() {
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+
      
       firebase.auth().onAuthStateChanged(
       
@@ -119,10 +122,17 @@ export default {
             var providerData = user.providerData;
       
             console.log(email)
+ 
+
+
             user.getIdToken().then(function(accessToken) {
               
-              document.getElementById("sign-in-status").textContent =
-                `Signed in as ${email}`;
+              document.getElementById("sign-in-status").innerHTML =
+                `${email}  `;
+              
+              let aa = document.getElementById("firebaseui-auth-container")
+              aa.style.display = "none"
+              
               // document.getElementById("sign-in").textContent = "Sign out";
               // document.getElementById(
               //   "account-details"
@@ -145,8 +155,10 @@ export default {
           } else {
       
             // User is signed out.
-            // document.getElementById("sign-in-status").textContent =
+            // document.getElementById("sign-in-status").innerHTML =
             //   "Signed out";
+              let bb = document.getElementById("logoutlink")
+              bb.style.display = "none"
             // document.getElementById("sign-in").textContent = "Sign in";
             // document.getElementById("account-details").textContent = "null";
           }

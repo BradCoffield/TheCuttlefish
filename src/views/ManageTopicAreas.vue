@@ -8,7 +8,7 @@
       <li v-for="(item, index) in topicsEnhanced" :key="index" class="pad-half lil-space-here">
         <span class="sub-label">{{item.name}}</span> 
         <br>
-        <ul>
+        <ul style="display:flex">
           <li v-for="(i, idex) in item.subtopics" :key="idex">
             <div v-if="i.edit" class="mt-1 pad-1 noisebackground">
               <input class="input" v-model="i.name" v-focus>
@@ -29,8 +29,8 @@
             </div>
           </li>
            
-       <button class="button is-small is-white mt-1 is-fullwidth" @click="pushNewEmpty(index)">
-          <span class="mdi mdi-plus"></span>
+       <button class="button is-small is-white mt-1 " @click="pushNewEmpty(index)">
+          <span class="mdi  ">Add new {{item.name}} topic area</span>
         </button>
        
         </ul>

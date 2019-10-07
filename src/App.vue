@@ -86,6 +86,10 @@ export default {
   methods: {
     logOut() {
       firebase.auth().signOut();
+         let bb = document.getElementById("logoutlink")
+              bb.style.display = "none"
+                   let aa = document.getElementById("firebaseui-auth-container")
+              aa.style.display = "block"
     }
   },
 

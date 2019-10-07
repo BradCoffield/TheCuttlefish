@@ -66,18 +66,20 @@ export default {
         this.broadTopics.push(Object.keys(theData)); //creates an array of strings with top level areas, like Humanities
         this.broadTopics[0].forEach(top => {
           console.log(top);
-          // console.log(theData[top]);
+          console.log(theData[top]);
           theData[top].forEach(params => {
             this.topicAreas.push(params);
-          }); //this uses those top-level areas to get the individual topic areas and push them all into a new, flat array
-          this.topicAreas.forEach(tt => {
+          }); console.log(this.topicAreas); //this uses those top-level areas to get the individual topic areas and push them all into a new, flat array
+    
+        });
+              this.topicAreas.forEach(tt => {
+            console.log(tt);
             this.topicAreasCounter.push({
               name: tt,
               excellentFor: 0,
               goodFor: 0
-            }); //this builds a new array of objects with the topic areas and counters for possibilities. This will get modified based on our real data and then used to populate our chart. Hopefully.
+            });  //this builds a new array of objects with the topic areas and counters for possibilities. This will get modified based on our real data and then used to populate our chart. Hopefully.
           });
-        });
         this.rawDatabasesData.forEach(db => {
           if (db.excellentFor) {
             db.excellentFor.forEach(efi => {

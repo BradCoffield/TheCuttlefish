@@ -8,7 +8,7 @@
       <li v-for="(item, index) in topicsEnhanced" :key="index" class="pad-half lil-space-here">
         <span class="sub-label">{{item.name}}</span> 
         <br>
-        <ul style="display:flex">
+        <ul style="">
           <li v-for="(i, idex) in item.subtopics" :key="idex">
             <div v-if="i.edit" class="mt-1 pad-1 noisebackground">
               <input class="input" v-model="i.name" v-focus>

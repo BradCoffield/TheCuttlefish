@@ -41,6 +41,9 @@
             </b-navbar-dropdown>
              <b-navbar-dropdown label="Featured Collections">
                <b-navbar-item  >
+                    <router-link to="/list-featured-collections">Featured Collections List</router-link>
+                </b-navbar-item>
+               <b-navbar-item  >
                     <router-link to="/add-featured-collection">Add Featured Collection</router-link>
                 </b-navbar-item>
              </b-navbar-dropdown>

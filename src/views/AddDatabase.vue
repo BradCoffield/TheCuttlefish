@@ -34,7 +34,7 @@
             :key="index"
           >
             <button
-              class="button lil-space-here "
+              class="button lil-space-here"
               :class="{'is-success':item.selected, 'is-text':!item.selected}"
               @click="item.selected=!item.selected"
             >{{item.name}}</button>
@@ -46,10 +46,10 @@
         <ul class="ml-1 mt-1" v-if="topicsExcellentForEnhanced.length > 0">
           <li v-for="(item, index) in topicsExcellentForEnhanced" :key="index">
             <span class="sub-label">{{item.name}}</span>
-            <br>
+            <br />
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here  "
+              class="button lil-space-here"
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -57,14 +57,14 @@
           </li>
         </ul>
       </b-field>
-      <b-field label="Good For">  
+      <b-field label="Good For">
         <ul class="ml-1 mt-1" v-if="topicsGoodForEnhanced.length > 0">
           <li v-for="(item, index) in topicsGoodForEnhanced" :key="index">
             <span class="sub-label">{{item.name}}</span>
-            <br>
+            <br />
             <button
               :class="{'is-success':i.selected, 'is-text':!i.selected}"
-              class="button lil-space-here  "
+              class="button lil-space-here"
               @click="i.selected=!i.selected"
               v-for="(i, idex) in item.subtopics"
               :key="idex"
@@ -73,15 +73,14 @@
         </ul>
       </b-field>
       <div class="form-buttons">
-       
         <button @click="goHome" class="button is-danger">
           <span class="mdi mdi-cancel"></span> Cancel
-        </button> <button @click="sendUpdate" class="button is-info">
+        </button>
+        <button @click="sendUpdate" class="button is-info">
           <span class="mdi mdi-check"></span> Update
         </button>
       </div>
     </section>
-    
   </div>
 </template>
 
@@ -206,7 +205,7 @@ export default {
       this.database.content_types = [];
       this.database.excellentFor = [];
       this.database.goodFor = [];
-   
+
       if (this.topicsExcellentForEnhanced.length > 0) {
         this.topicsExcellentForEnhanced.forEach(i => {
           i.subtopics.forEach(j => {
@@ -233,16 +232,30 @@ export default {
       this.prepTopicsforSubmit();
 
       evt.preventDefault();
+      if (!this.database.name){
+        this.$buefy.toast.open({
+            message: "Error submitting database",
+            type: "is-danger"
+          });
+      }
       const updateRef = firebase
         .firestore()
         .collection("databases")
         .doc(this.database.name)
-        .set(this.database, { merge: true });
+        .set(this.database, { merge: true }).then(()=>{
 
-      this.$toast.open({
+      this.$buefy.toast.open({
         message: "Database submitted!",
         type: "is-success"
       });
+        })
+        .catch(err => {
+          this.$buefy.toast.open({
+            message: "Error submitting database",
+            type: "is-danger"
+          });
+        });
+
       this.initialData();
       this.$forceUpdate();
       document.body.scrollTop = 0; // For Safari

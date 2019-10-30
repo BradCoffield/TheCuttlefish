@@ -12,23 +12,20 @@
         style="display:inline-block;"
       >
         <div v-if="ct.edit" class="noisebackground mt-1 pad-1">
-          <input
-            class="input"
-            v-model="ct.name"
-             
-            v-focus
-          >
-          <div class="form-buttons"><button class="button is-danger" @click="deleteThisOne(ct.name)" v-if="ct.name">Delete</button>
-          <button class="button is-success" @click="ct.edit=false" style="margin-left:5px;">
-          <span class="mdi mdi-check"></span>
-          </button></div>
+          <input class="input" v-model="ct.name" v-focus />
+          <div class="form-buttons">
+            <button class="button is-danger" @click="deleteThisOne(ct.name)" v-if="ct.name">Delete</button>
+            <button class="button is-success" @click="ct.edit=false" style="margin-left:5px;">
+              <span class="mdi mdi-check"></span>
+            </button>
+          </div>
         </div>
 
         <div v-else>
           <button class="button is-light" @click="ct.edit = true;">{{ct.name}}</button>
         </div>
       </li>
-     
+
       <li style="display:inline-block;">
         <button class="button is-white" @click="pushNewEmpty">
           <span class="mdi mdi-plus"></span>
@@ -37,7 +34,6 @@
     </ul>
 
     <div class="form-buttons">
-      
       <button @click="goHome" class="button is-danger">
         <span class="mdi mdi-cancel"></span> Cancel
       </button>
@@ -90,9 +86,10 @@ export default {
     });
   },
   methods: {
-    deleteThisOne(thang){
-      
-      this.fromFirestoreObjectified = this.fromFirestoreObjectified.filter(item => item.name != thang);
+    deleteThisOne(thang) {
+      this.fromFirestoreObjectified = this.fromFirestoreObjectified.filter(
+        item => item.name != thang
+      );
     },
     filterEmpties() {
       this.fromFirestoreObjectified = this.fromFirestoreObjectified.filter(
@@ -116,16 +113,20 @@ export default {
       evt.preventDefault();
       this.ref
         .set({ forDatabases: this.readyForFirestore }, { merge: true })
+        .then(params => {
+          console.log('Success!');
+          this.$buefy.toast.open({
+            message: "Content Types Updated!",
+            type: "is-success"
+          });
+        })
         .catch(function(error) {
           console.error("Error writing document: ", error);
+          this.$buefy.toast.open({
+            message: "Error submitting content types",
+            type: "is-danger"
+          });
         });
-
-      //  this.ref.set(this.readyForFirestore, { merge: true });
-
-      this.$toast.open({
-        message: "Content Types Updated!",
-        type: "is-success"
-      });
 
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera

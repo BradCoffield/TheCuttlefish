@@ -19,7 +19,9 @@ exports.cacheNewBooks = functions
       let probe = require("probe-image-size");
 
       let urlToUse = {};
-      urlToUse.url = `https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,new%20books&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&tab=LibraryCatalog&limit=150&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks`;
+
+      // urlToUse.url = `https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,oxford&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&tab=LibraryCatalog&limit=150&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks`;
+       urlToUse.url = "https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=any,contains,new%20books&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&scope=MyInstitution&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47&qInclude=location_code,include,3380%E2%80%93463253560003380%E2%80%93newbooks";
       // urlToUse.url = `https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=lsr03,exact,newbooks}&vid=01TRAILS_ROCKY&tab=default_tab&limit=150&scope=P-01TRAILS_ROCKY&apikey=l8xx79d281ecc1e44f9f8b456a23c8cb1f47`;
       // urlToUse.url = `https://api-na.hosted.exlibrisgroup.com/primo/v1/search?q=lsr03,exact,newbooks}&vid=01TRAILS_ROCKY&tab=default_tab&limit=150&scope=P-01TRAILS_ROCKY&apikey=${
       //   process.env.PRIMO_API_KEY
@@ -67,7 +69,7 @@ exports.cacheNewBooks = functions
               },
               { merge: false }
             )
-            .then((params) => {
+            .then(() => {
               res.send("Done!");
             });
         });
@@ -83,7 +85,7 @@ exports.readPrimoBooks = functions.https.onRequest(async (req, res) => {
         .firestore()
         .collection("primo-book-searches")
         .get();
-      theData = [];
+      let theData = [];
       primoBooks.forEach((doc) => {
         // console.log(doc.id, "=>", doc.data());
 
